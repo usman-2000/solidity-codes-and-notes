@@ -13,3 +13,13 @@ contract Importing_a_Contract{
 
 
 }
+
+
+contract Importing_a_Contract_Array{
+    MAPPINGS[] public mappingsArray;
+
+    function createMappingsContract() public {
+        MAPPINGS mappings = new MAPPINGS();
+        mappingsArray.push(mappings);
+    }
+}
