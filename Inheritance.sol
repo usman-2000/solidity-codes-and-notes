@@ -19,3 +19,32 @@ contract ExtraStorage is SimpleStorageContract{
         FavoriteNumber = _favoriteNumber + 5;
     }
 }
+
+
+
+
+
+// From another video tutorial
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+// faida: already declared contracts ko inherit kr skty hain easily
+
+contract parent{
+    string public str;
+    address public addr;
+
+    constructor(){
+        str = "Aliyan";
+        addr = msg.sender;
+    }
+
+    function setter(string memory _str) public {
+        str = _str;
+    }
+}
+
+contract child is parent{
+
+}
