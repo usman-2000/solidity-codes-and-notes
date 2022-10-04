@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+// ENUM
+// User define data type used to define a constant and an integer.
+// Enum ki jonsi bhi values hoti hain wo index values mn save ho jati hain
+// enum user{allowed,not Allowed,wait}
+            //  0   ,    1   ,    2
+// Khud sy aik data type bana lety hain or us data type ko different states bta dety hain
+// enum ko define krengay to us k end mn semicolon nahi daleingay
+
+contract demo{
+    enum user {allowed,not_allowed,wait}
+
+    user public u1 = user.wait;
+    uint public lottery = 1000;
+
+    function check() public {
+        if(u1 == user.allowed){
+            lottery =0;
+        }
+    }
+
+    function set() public {
+        u1 = user.allowed;
+    }
+}
