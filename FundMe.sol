@@ -37,6 +37,31 @@ contract FundMe{
 
     }
 
+    function withdraw() public {
+        for(uint256 funderIndex = 0; funderIndex<funders.length;funderIndex++){
+            address funder = funders[funderIndex];
+            addressToAmountFunded[funder] = 0;
+
+        }
+
+        //resetting an array
+        funders = new address [](0);
+
+        // Sending ETH to the Contract
+        // Three Different ways to do this
+        // 1: transfer    (2300 gas, throws error)
+        // 2: send        (2300 gas, returns bool)
+        // 3: call        (forward all gas or set gas, returns bool)
+
+        // call in combination with re-entrancy guard is the recommended method to use after December 2019.
+
+        // msg.sender = address
+        // payable msg.sender = payable address
+
+        payable(msg.sender).transfer(address(this).balance);
+
+    }
+
     
 
 
