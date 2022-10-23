@@ -3,7 +3,7 @@
 // set a mininmum funding value in USD
 
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.13;
 
 
 // chainlink is a technology for getting external data and doing external computation 
@@ -24,6 +24,12 @@ contract FundMe{
     address[] public funders;
     mapping (address => uint256) public addressToAmountFunded;
 
+    address public owner;
+
+    constructor(){
+        owner = msg.sender;
+    }
+
     function fund() public payable {
     // 1: want to be able to send the minimum amount in USD
     // 2: how do we send ETH to this contract
@@ -37,7 +43,7 @@ contract FundMe{
 
     }
 
-    function withdraw() public {
+    function withdraw() public onlyOwner {
         for(uint256 funderIndex = 0; funderIndex<funders.length;funderIndex++){
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
@@ -58,12 +64,29 @@ contract FundMe{
         // msg.sender = address
         // payable msg.sender = payable address
 
+        //transfer
         payable(msg.sender).transfer(address(this).balance);
+
+        //send
+        bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        require(sendSuccess,"SENDING FAILED");
+
+        //call
+        //       call function returns two variables
+        (bool callSuccess,) =payable(msg.sender).call{value : address(this).balance}("");
+        require(callSuccess,"Call Failed");
 
     }
 
-    
+    modifier onlyOwner{
+        require(msg.sender==owner,"Only owner can withraw");
+        _; // yeh agar neechy likhein require statement sy to iska mtlb hota hai k pehly yeh 
+        //require statement chalaygi agr fulfile hui to further code chalay ga
 
+        // agar yeh require statement sy pehlay laga hoga to iska mtlb hai k pehly code chalay
+        //phr statement chalaygi
+
+    }
 
 }
 
