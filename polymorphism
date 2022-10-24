@@ -1,0 +1,17 @@
+// function ka name same hoga magar usky arguments different hongay to usko compile kr lay ga bina error k
+// lekin frontend py kese pata lagay ga konsa function kis chz ka hai(qk name same hoga) to wwo hm
+// polymorphism sy achieve kr skty
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract polymorphism{
+    function sum(uint a, uint b) public pure returns(uint){
+        return a+b;
+    }
+
+    function sum(uint a, uint b, uint c) public pure returns(uint){
+        return a+b+c;
+    }
+}
+
