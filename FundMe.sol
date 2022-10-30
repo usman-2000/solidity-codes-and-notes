@@ -12,28 +12,38 @@ pragma solidity ^0.8.13;
 
 // payable:   is attribute sy hm value k attribute ko access kr skty hain.
 
+// rever()   keyword do exactly same thing as the require keyword without getting the conditions
+//           you can use the revert keyword where you want
+
 
 //Here we are importing a linrary
 import "./priceConverter.sol";
+
+error NotOwner();
 
 contract FundMe{
 
     using priceConverter for uint256;
 
-    uint256 public minimumUSD = 50 * 1e18;
+
+    //     By using constant,immutable keyword we can save the gas
+    uint256 public constant MINIMUM_USD = 50 * 1e15;
     address[] public funders;
     mapping (address => uint256) public addressToAmountFunded;
 
-    address public owner;
+
+    // immutable variable k sath i ka prefix laga dena chahiye is sy pata lagta hai k immutable 
+    //variable hai
+    address public immutable i_owner;
 
     constructor(){
-        owner = msg.sender;
+        i_owner = msg.sender;
     }
 
     function fund() public payable {
     // 1: want to be able to send the minimum amount in USD
     // 2: how do we send ETH to this contract
-        require(msg.value.getConversionRate() >minimumUSD,"Didn't send enough"); // 1e18 == 1 *10**18
+        require(msg.value.getConversionRate() >MINIMUM_USD,"Didn't send enough"); // 1e18 == 1 *10**18
         // 18 decimals
         funders.push(msg.sender);
         addressToAmountFunded[msg.sender] = msg.value;
@@ -79,12 +89,21 @@ contract FundMe{
     }
 
     modifier onlyOwner{
-        require(msg.sender==owner,"Only owner can withraw");
+        // require(msg.sender==i_owner,"Only owner can withraw");
+
+
+        if(msg.sender!=i_owner){
+            revert NotOwner();
+        }
+
+
         _; // yeh agar neechy likhein require statement sy to iska mtlb hota hai k pehly yeh 
         //require statement chalaygi agr fulfile hui to further code chalay ga
 
         // agar yeh require statement sy pehlay laga hoga to iska mtlb hai k pehly code chalay
         //phr statement chalaygi
+
+
 
     }
 
