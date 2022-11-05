@@ -103,8 +103,19 @@ contract FundMe{
         // agar yeh require statement sy pehlay laga hoga to iska mtlb hai k pehly code chalay
         //phr statement chalaygi
 
+    }
 
+    // What happens if someone sends this contract eth without calling the fund function
+    // Two special functions:
+    // recieve()
+    // fallback()
 
+    receive() external payable {
+        fund();
+    }
+
+    fallback() external payable {
+        fund();
     }
 
 }
